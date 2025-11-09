@@ -200,10 +200,18 @@ with left:
     actual = actual_radar(TASKS, ATTEMPTS, REFLECTIONS, start_str, end_str)
 
     def radar_trace(data, name, color):
-        theta = [d["phase"] for d in data] + [data[0]["phase"]]
-        r = [d["score"] for d in data] + [d[0]["score"] if isinstance(d, list) else data[0]["score"]]
-        return go.Scatterpolar(r=r, theta=theta, fill='toself', name=name, line=dict(color=color))
+    # data = list of dicts, each: { "phase": <str>, "score": <float> }
+    theta = [d["phase"] for d in data] + [data[0]["phase"]]
+    r = [d["score"] for d in data] + [data[0]["score"]]
 
+    return go.Scatterpolar(
+        r=r,
+        theta=theta,
+        fill='toself',
+        name=name,
+        line=dict(color=color, width=2),
+        opacity=0.7
+    )
     fig = go.Figure()
     fig.add_trace(radar_trace(expected, "Expected", "rgba(100,116,139,0.6)"))
     fig.add_trace(radar_trace(actual,   "Actual",   "rgba(245,158,11,0.6)"))
